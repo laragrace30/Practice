@@ -104,6 +104,42 @@ namespace Practice
 
         private void UpdateInput(string value)
         {
+         
+            if (value == "." && _currentInput.EndsWith("."))
+            {
+                return;
+            }
+
+      
+            if (value == "." && (string.IsNullOrEmpty(_currentInput) || !char.IsDigit(_currentInput[^1])))
+            {
+                value = "0."; 
+            }
+
+            if (value == "." && _currentInput.Contains("."))
+            {
+                var parts = _currentInput.Split(new[] { '+', '-', '*', '/' });
+                if (parts.Length > 0 && parts[^1].Contains("."))
+                {
+                    return; 
+                }
+            }
+
+            if (value == "(" && !string.IsNullOrEmpty(_currentInput) &&
+                (char.IsDigit(_currentInput[^1]) || _currentInput[^1] == ')'))
+            {
+                _currentInput += "*";
+                txtTest.Text += "*";
+            }
+
+            if (value == ")" && !string.IsNullOrEmpty(_currentInput) &&
+                (_currentInput[^1] == '('))
+            {
+                
+                return;
+            }
+
+
             _currentInput += value;
             txtTest.Text += value;
         }
@@ -114,12 +150,12 @@ namespace Practice
             {
                 var result = EvaluateExpression(_currentInput);
                 lblTest.Text = result.ToString();
-                _currentInput = ""; // Clear the current input after calculation
-                txtTest.Clear(); // Clear the TextBox for new input
+                _currentInput = ""; 
+                txtTest.Clear();
             }
             catch (Exception)
             {
-                lblTest.Text = "Error"; // Handle any errors during evaluation
+                lblTest.Text = "Error";
             }
         }
 
@@ -137,6 +173,11 @@ namespace Practice
                 txtTest.Text = txtTest.Text.Remove(txtTest.Text.Length - 1, 1);
                 _currentInput = _currentInput.Remove(_currentInput.Length - 1, 1);
             }
+        }
+
+        private void decButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            UpdateInput(".");
         }
     }
 }

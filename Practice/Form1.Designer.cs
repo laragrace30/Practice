@@ -310,6 +310,7 @@
             decButton.TabIndex = 22;
             decButton.Text = ".";
             decButton.UseVisualStyleBackColor = true;
+            decButton.MouseClick += decButton_MouseClick;
             // 
             // Form1
             // 
